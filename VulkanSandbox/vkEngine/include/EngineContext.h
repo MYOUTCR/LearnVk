@@ -14,8 +14,9 @@ namespace vkEngine
 		~EngineContext();
 
 	protected:
-		void init();
-		void initInstance();
+		void initVulkan();
+		void createInstance();
+		
 
 		void cleanup();
 	private:

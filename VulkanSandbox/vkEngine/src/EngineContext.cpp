@@ -6,7 +6,7 @@ namespace vkEngine
 {
 	EngineContext::EngineContext()
 	{
-		init();
+		initVulkan();
 	}
 
 	EngineContext::~EngineContext()
@@ -14,30 +14,32 @@ namespace vkEngine
 		cleanup();
 	}
 
-	void EngineContext::init()
+	void EngineContext::initVulkan()
 	{
-		initInstance();
+		createInstance();
 	}
 
-	void EngineContext::initInstance()
+	void EngineContext::createInstance()
 	{
-		VkApplicationInfo applicationInfo = {};
-		applicationInfo.apiVersion = VK_API_VERSION_1_0;
+		VkApplicationInfo appInfo = {};
+		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+		appInfo.pApplicationName = "vkEngine";
+		appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+		appInfo.pEngineName = "No Engine";
+		appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+		appInfo.apiVersion = VK_API_VERSION_1_0;
 
-		VkInstanceCreateInfo instanceCreateInfo = {};
-		instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-		instanceCreateInfo.pApplicationInfo = &applicationInfo;
-		instanceCreateInfo.enabledLayerCount = 0;
-		instanceCreateInfo.ppEnabledLayerNames = nullptr;
-		instanceCreateInfo.enabledExtensionCount = 0;
-		instanceCreateInfo.ppEnabledExtensionNames = nullptr;
-		if (vkCreateInstance(&instanceCreateInfo, nullptr, &m_instance) != VK_SUCCESS)
+		VkInstanceCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+		createInfo.pApplicationInfo = &appInfo;
+		createInfo.enabledLayerCount = 0;
+		createInfo.ppEnabledLayerNames = nullptr;
+		createInfo.enabledExtensionCount = 0;
+		createInfo.ppEnabledExtensionNames = nullptr;
+
+		if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS)
 		{
-			std::cout << "Failed to create instance!" << std::endl;
-		}
-		else
-		{
-			std::cout << "Instance created successfully!" << std::endl;
+			throw std::runtime_error("Failed to create instance!");
 		}
 	}
 
