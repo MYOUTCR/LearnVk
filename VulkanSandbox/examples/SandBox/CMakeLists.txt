@@ -11,25 +11,16 @@ set(CMAKE_CXX_STANDARD 20)
 # 如果需要，设置为必需，这样CMake会报错如果编译器不支持C++20
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-# 添加 vkEngine 的库目录
-set(VK_ENGINE_PROJECT_PATH "D:/Engineering/VulkanSandbox/vkEngine")
-# 假设 vkEngine 的库文件在 D:/Engineering/VulkanSandbox/vkEngine 目录下
-#link_directories(D:/Engineering/VulkanSandbox/vkEngine)
-link_directories(${VK_ENGINE_PROJECT_PATH})
+add_executable(${PROJECT_NAME} main.cpp)
 
-# 添加可执行文件或库
-add_executable(${PROJECT_NAME} main.cpp)  # 假设你的源文件是 main.cpp
-
-# 链接 vkEngine 库
-target_link_libraries(${PROJECT_NAME} PRIVATE vkEngine)
-
-# 如果需要包含头文件目录
-#target_include_directories(${PROJECT_NAME} PRIVATE D:/Engineering/VulkanSandbox/vkEngine/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${VK_ENGINE_PROJECT_PATH}/include)
-
+#vkEngine
+#添加vkEngine的库目录
+set(VK_ENGINE_PROJECT_PATH "D:/Engineering/LearnVK/VulkanSandbox/vkEngine")
 # 设置 vkEngine DLL 的源路径
-#set(VK_ENGINE_DLL_PATH "${CMAKE_SOURCE_DIR}/../vkEngine/Debug/vkEngine.dll")  # 根据你的实际路径调整
-set(VK_ENGINE_DLL_PATH "D:/Engineering/VulkanSandbox/out/build/x64-Debug/vkEngine/vkEngine.dll") 
+set(VK_ENGINE_DLL_PATH "D:/Engineering/LearnVK/VulkanSandbox/out/build/x64-Debug/vkEngine/vkEngine.dll") 
+link_directories(${VK_ENGINE_PROJECT_PATH})
+target_include_directories(${PROJECT_NAME} PRIVATE ${VK_ENGINE_PROJECT_PATH}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE vkEngine)
 
 # 添加自定义命令以复制 DLL
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -37,6 +28,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     "${VK_ENGINE_DLL_PATH}"
     "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
+
 
 #cmake_minimum_required(VERSION 3.10)
 #project(SandBox)
